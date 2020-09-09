@@ -9,7 +9,7 @@ const userController = require("../controllers/user")
 router.post("/signup", userController.user);
 
 //cleaning up  users incase created more than once
-router.delete("/:userId", userController.userDelete);
+router.delete("/:userId", userController.userDeleted);
 
 //checking if a user already has an account , if no then create new user
 router.post("/login", userController.userLogin);
@@ -17,4 +17,3 @@ router.post("/login", userController.userLogin);
 
 
 module.exports = router;
-

@@ -9,7 +9,6 @@ const PORT= process.env.PORT || 6000
 
 
 // routes constants
-const questions = require("./routes/questions-route");
 const users = require("./routes/user");
 
 
@@ -35,7 +34,7 @@ app.get("/api/v1", (req, res)=>{
     res.send("This is the porsche app for edu project")
 });
 
-app.use("/api/v1/questions", questions)  // https://localhost:6000/questions/   =>this will return Greetings from the test controller  
+ // https://localhost:6000/users/   =>this will return Greetings from the test controller  
 app.use("/api/v1/users", users)
 
 
