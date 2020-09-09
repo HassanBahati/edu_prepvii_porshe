@@ -26,16 +26,17 @@ mongoose.Promise = global.Promise;
 let db = mongoose.connection
 db.on("error", console.error.bind(console, "Failed to connect to database"));
 
+
 app.use(express.json())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get("/api/v1", (req, res)=>{
+app.get("/", (req, res)=>{
     res.send("This is the porsche app for edu project")
 });
 
  // https://localhost:6000/users/   =>this will return Greetings from the test controller  
-app.use("/api/v1/users", users)
+app.use("/auth", users)
 
 
 app.listen(PORT, () => {

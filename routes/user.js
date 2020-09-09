@@ -6,6 +6,9 @@ const jwt = require("jsonwebtoken");
 const userController = require("../controllers/user")
 
 //testing 
+router.get("/test", userController.test)
+
+//signup users
 router.post("/signup", userController.user);
 
 //cleaning up  users incase created more than once

@@ -1,20 +1,27 @@
 const User = require("../models/user");
-const mongooose = require("mongoose");
+const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 
+//testing
+exports.test = (req, res) => {
+   res.send ("testing routers") 
+}
+
 //controllers for users to signin 
-exports.user = (req  , res, next)=>{
+exports.user = (req  , res)=>{
     User.find({email: req.body.email })
     .exec()
     .then(user => {
+        
         if (user.length >= 1) {
             return res.status(409).json({
                 message: "Email exists already"
             });
         }else{
-            bcrypt.hash(req.body.password, 10, (err, hash) =>{
+ 
+                bcrypt.hash(req.body.password, 10, (err, hash) =>{
                 if (err) {
                     return res.status(500).json({
                         error: err
@@ -28,6 +35,7 @@ exports.user = (req  , res, next)=>{
                     user
                     .save()
                     .then(result => {
+                        console.log(result)
                         res.status(201).json({
                             message: "User created"
                         });
@@ -40,16 +48,12 @@ exports.user = (req  , res, next)=>{
                     });
                 }
             });
-     
+         
         }
-    })
-    .catch(err => {
-        console.log(err);
-        res.status(500).json({
-            error: err
-        });
-    })
-};
+     
+      }
+    )}   
+
 
 
 //controller for users to login 
