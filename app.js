@@ -38,7 +38,7 @@ app.use(express.json())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get("/api", (req, res)=>{
+app.get("/", (req, res)=>{
     res.send("This is the porsche app for edu api development project")
 });
 
