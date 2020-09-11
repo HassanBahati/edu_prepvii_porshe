@@ -21,8 +21,7 @@ exports.questionCreate = (req, res, next) => {
     .save()
     .then(result => {
       res.status(201).json({
-          message: "Question posted",
-          question: question, _id
+          message: "Question posted"
       });
   })
     .catch(err => {
