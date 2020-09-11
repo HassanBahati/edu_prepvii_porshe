@@ -13,10 +13,11 @@ router.get("/:id", questionController.questionDetails);
 
 
 // delete question
-router.delete("/:id/delete", questionController.questionDelete);
+router.delete("/:id", questionController.questionDelete);
 
 //get all questions
-router.get("/allQuestions", questionController.allQuestions);
+router.get("/all", questionController.allQuestions);
+
 
 
 module.exports = router;

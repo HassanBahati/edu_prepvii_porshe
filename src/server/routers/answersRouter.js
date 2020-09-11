@@ -15,6 +15,9 @@ router.get("/questions/<questionId>/answers", answerController.answerCreate)
 // update an answer by author only
  //router.put("/questions/<questionId>/answers/<answerId>", verify, answerController.answerUpdate)
 
+ //get all answers
+router.get("/:id", answerController.allAnswers);
+
 
 module.exports = router;
 

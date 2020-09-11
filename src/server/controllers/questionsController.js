@@ -21,7 +21,9 @@ exports.questionCreate = (req, res, next) => {
     .save()
     .then(result => {
       res.status(201).json({
-          message: "Question posted"
+          message: "Question posted",
+          _id: new mongoose.Types.ObjectId(),
+           question: req.body.question
       });
   })
     .catch(err => {

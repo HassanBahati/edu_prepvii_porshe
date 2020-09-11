@@ -1,6 +1,6 @@
 const Answers = require("../models/schemas/answersModel");
 const mongoose  = require("mongoose");
-
+const fs = require("fs");
 
 
 //posting answer
@@ -23,7 +23,10 @@ exports.answerCreate = (req, res, next) => {
     .save()
     .then(result => {
       res.status(201).json({
-          message: "Answer posted"
+          message: "Answer posted",
+          question: req.body.questionId,
+          answer: req.body.answer,
+          _id:  mongoose.Types.ObjectId(),
       });
   })
     .catch(err => {
@@ -49,4 +52,11 @@ exports.answerUpdate = (req, res) => {
       });
     }
   );
+};
+
+exports.allAnswers = (req , res) => {
+  fs.readFile(_dirname +  Answers + "users.json", 'utf8', function (err, data) {
+    console.log( data );
+     res.end( data );
+  });
 };
