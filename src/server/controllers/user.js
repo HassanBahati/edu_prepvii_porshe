@@ -18,7 +18,7 @@ exports.user = (req  , res, next)=>{
             });
         }else{
             bcrypt.hash(req.body.password, 10, (err, hash) =>{
-                //const {error} = signInValidation(req.body);
+                const {error} = signInValidation(req.body);
                 if (err) {
                     return res.status(500).json({
                         error: err
@@ -66,7 +66,7 @@ exports.userLogin = (req, res, next) => {
     .exec()
     .then(user => {
         console.log(user)
-        //const {error} = LoginValidation(req.body);
+        const {error} = LoginValidation(req.body);
         if (user.length < 1) {
             return res.status(401).json({
                 message: "Auth failed, wrong password"
