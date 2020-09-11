@@ -10,9 +10,9 @@ const PORT= process.env.PORT || 6000
 
 // routes constants
 
-const questions = require("../server/routers/questionsRouter");
-const answers = require("../server/routers/answersRouter");
-const users = require("../server/routers/userRoute");
+const questions = require("./src/server/routers/questionsRouter");
+const answers = require("./src/server/routers/answersRouter");
+const users = require("./src/server/routers/userRoute");
 
 
 
