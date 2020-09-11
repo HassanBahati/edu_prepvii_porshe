@@ -13,7 +13,7 @@ router.post("/post", answerController.answerCreate)
 router.get("/questions/<questionId>/answers", answerController.answerCreate)
 
 // update an answer by author only
- router.put("/questions/<questionId>/answers/<answerId>", verify, answerController.answerUpdate)
+ //router.put("/questions/<questionId>/answers/<answerId>", verify, answerController.answerUpdate)
 
 
 module.exports = router;
