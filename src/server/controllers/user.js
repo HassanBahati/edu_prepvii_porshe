@@ -5,74 +5,82 @@ const jwt = require("jsonwebtoken");
 
 
 //import validation schema
-const signInValidation = require("../helpers/schemas/users")
+const signInValidation = require("../helpers/schemas/users");
 
 //controllers for users to signin 
-exports.user = (req  , res, next)=>{
-    User.find({email: req.body.email })
-    .exec()
-    .then(user => {
-        if (user.length >= 1) {
-            return res.status(409).json({
-                message: "Email exists already"
-            });
-        }else{
-            bcrypt.hash(req.body.password, 10, (err, hash) =>{
-                const {error} = signInValidation(req.body);
-                if (err) {
-                    return res.status(500).json({
-                        error: err
-                    });
-                }else {
-                    const user = new User({
-                        _id: new mongoose.Types.ObjectId(),
-                        name: req.body.name,
-                        email: req.body.email,
-                        password: hash
-                    });
-                    user
-                    .save()
-                    .then(result => {
-                        res.status(201).json({
-                            message: "User created",
-                            user: user.name, user_id
+module.exports.user = (req, res, next) => {
+    User.find({ email: req.body.email })
+        .exec()
+        .then(user => {
+            if (user.length >= 1) {
+                return res.status(409).json({
+                    message: "Email exists already"
+                });
+            } else {
+                bcrypt.hash(req.body.password, 10, (err, hash) => {
+                    // let data = req.body
+                    // signInValidation(data);
+                    if (err) {
+                        return res.status(500).json({
+                            error: "err"
                         });
-                    })
-                    .catch(err => {
-                        console.log(err);
-                        res.status(500).json({
-                            error: err
+                    } else {
+                        const user = new User({
+                            _id: new mongoose.Types.ObjectId(),
+                            name: req.body.name,
+                            email: req.body.email,
+                            password: hash
                         });
-                    });
-                }
-            });
-     
-        }
-    })
-    .catch(err => {
-        console.log(err);
-        res.status(500).json({
-            error: err
+                        user
+                            .save()
+                            .then(result => {
+                                res.status(201).json({
+                                    message: "User created",
+                                    user: user.name
+                                });
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                res.status(500).json({
+                                    error: err
+                                });
+                            });
+                    }
+                });
+
+            }
         });
-    })
+        // .catch(err => {
+        //     console.log(err);
+        //     res.status(500).json({
+        //         error: err
+        //     });
+        // })
 };
 
 
 
 //controller for users to login 
 
-exports.userLogin = (req, res, next) => {
-    User.find({ email: req.body.email})
+module.exports.userLogin = (req, res, next) => {
+    const user =User.findOne({ email: req.body.email})
     .exec()
     .then(user => {
         console.log(user)
-        const {error} = LoginValidation(req.body);
-        if (user.length < 1) {
+        // const {error} = LoginValidation(req.body);
+        if (user === null) {
             return res.status(401).json({
-                message: "Auth failed, wrong password"
+                message: "user doesnot exist"
             });
         }
-        bcrypt.compare(req.body.password, user[0].password, (err, res) =>{
+        else if(user.length < 1) {
+             {
+                return res.status(401).json({
+                    message: "Auth failed, wrong password"
+                });
+            }
+        }
+        bcrypt.compare(req.body.password, user.password, (err, result) =>{
             if (err) {
                 return res.status(401).json({
                     message: "Auth failed, wrong email"
@@ -80,17 +88,18 @@ exports.userLogin = (req, res, next) => {
             }
              else {
                 const token = jwt.sign({
-                    email: [0].email,
-                    userId: user[0]._id
+                    email: user.email,
+                    userId: user._id
                 }, 
                 process.env.JWT_KEY, {
                    expiresIn: "1h"  
                 }
                 )
-                return res.json({
+                return res.status(200)
+                .json({
                     message: "Auth successful, User succesfully logged in",
-                        token: token
-                })
+                    token: token
+                });
             }
         })
     })

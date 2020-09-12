@@ -1,9 +1,7 @@
 const express = require("express")
 const router = express.Router();
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 //require controllers
-const userController = require("../controllers/user")
+const userController = require("../controllers/user");
 
 
 //signup
