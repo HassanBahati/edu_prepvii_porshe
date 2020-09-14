@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const signInValidation = require("../helpers/schemas/users")
 
 //controllers for users to signin 
-exports.user = (req  , res, next)=>{
+exports.userSignUp = (req  , res, next)=>{
     User.find({email: req.body.email })
     .exec()
     .then(user => {
@@ -18,7 +18,7 @@ exports.user = (req  , res, next)=>{
             });
         }else{
             bcrypt.hash(req.body.password, 10, (err, hash) =>{
-                const {error} = signInValidation(req.body);
+                //const {error} = signInValidation(req.body);
                 if (err) {
                     return res.status(500).json({
                         error: err
@@ -35,7 +35,8 @@ exports.user = (req  , res, next)=>{
                     .then(result => {
                         res.status(201).json({
                             message: "User created",
-                            user: user.name, user_id
+                            username: user.name,
+                            id: user._id
                         });
                     })
                     .catch(err => {
@@ -55,43 +56,43 @@ exports.user = (req  , res, next)=>{
             error: err
         });
     })
+    //const result = Joi.validate(req.body, signInValidation)
 };
 
 
 
-//controller for users to login 
-
+//controller for users to login
 exports.userLogin = (req, res, next) => {
-    User.find({ email: req.body.email})
+    User.find({email: req.body.email})
     .exec()
     .then(user => {
-        console.log(user)
-        const {error} = LoginValidation(req.body);
         if (user.length < 1) {
-            return res.status(401).json({
-                message: "Auth failed, wrong password"
-            });
+           return res.status(401).json({
+               message: "Auth failed, wrong email"
+           })
         }
-        bcrypt.compare(req.body.password, user[0].password, (err, res) =>{
+        bcrypt.compare(req.body.password, user[0].password, (err, result) => {
             if (err) {
                 return res.status(401).json({
-                    message: "Auth failed, wrong email"
+                    message: "Auth failed"
                 })
             }
-             else {
+            if (result) {
                 const token = jwt.sign({
-                    email: [0].email,
-                    userId: user[0]._id
-                }, 
-                process.env.JWT_KEY, {
-                   expiresIn: "1h"  
-                }
-                )
-                return res.json({
-                    message: "Auth successful, User succesfully logged in",
-                        token: token
+                    email: user[0].email,
+                    id: user[0]._id
+                }, process.env.JWT_KEY,
+                {
+                    expiresIn : "1hr"
+                });
+                return res.status(200).json({
+                    message: "Auth Successful, successfully logged in",
+                    token: token
                 })
             }
+            res.status(401).json({
+                message: "Auth failed"
+            })
         })
     })
     .catch(err => {
@@ -99,9 +100,14 @@ exports.userLogin = (req, res, next) => {
         res.status(500).json({
             error: err
         });
-    })
+    });
 };
 
 
 
+
+
+
+
+ 
 

@@ -37,6 +37,14 @@ exports.questionCreate = (req, res, next) => {
 }
 
 
+//all questions
+exports.allQuestions = (req, res) => {
+  Questions.find((err, questions) => {
+    if (err) return console.log(err);
+    res.json(questions);
+    console.log(questions.length)
+  })
+}
 
 
 
@@ -61,15 +69,4 @@ exports.questionDelete = (req, res) => {
   });
 };
 
-//get all questions
-exports.allQuestions = (req, res) => {
-  Questions.find()
-  .exec()
-  .then(result)
-  .catch(err => {
-    console.log(err);
-    res.status(500).json({
-        error: err
-    });
-})
-}
+

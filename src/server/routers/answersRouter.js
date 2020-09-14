@@ -16,7 +16,7 @@ router.get("/questions/<questionId>/answers", answerController.answerCreate)
  //router.put("/questions/<questionId>/answers/<answerId>", verify, answerController.answerUpdate)
 
  //get all answers
-router.get("/:id", answerController.allAnswers);
+//router.get("/:id", answerController.allAnswers);
 
 
 module.exports = router;

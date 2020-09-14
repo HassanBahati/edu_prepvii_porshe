@@ -54,9 +54,4 @@ exports.answerUpdate = (req, res) => {
   );
 };
 
-exports.allAnswers = (req , res) => {
-  fs.readFile(_dirname +  Answers + "users.json", 'utf8', function (err, data) {
-    console.log( data );
-     res.end( data );
-  });
-};
+
