@@ -24,7 +24,7 @@ exports.answerCreate = (req, res, next) => {
     .then(result => {
       res.status(201).json({
           message: "Answer posted",
-          question: req.body.questionId,
+          question: req.body.question,
           answer: req.body.answer,
           _id:  mongoose.Types.ObjectId(),
       });

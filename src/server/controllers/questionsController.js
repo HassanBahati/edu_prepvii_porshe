@@ -46,13 +46,12 @@ exports.allQuestions = (req, res) => {
   })
 }
 
-
-
+  
 // get question by Id
 exports.questionDetails = (req, res, next) => {
-  Questions.findById(req.params.id, (err, question) => {
+  Questions.findById(req.params._id, (err, question) => {
     if (err) return next(err);
-    res.send(question);
+    res.json(question);
   });
 };
 

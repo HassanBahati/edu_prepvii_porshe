@@ -3,10 +3,14 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 require("dotenv").config()
 
+
 const app = express();
 const PORT= process.env.PORT || 6000
 
-
+///middlewares
+app.use(express.json())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // routes constants
 
@@ -17,7 +21,7 @@ const users = require("./src/server/routers/userRoute");
 
 
 //connect to mongoose
-let mongoDB = process.env.MONGODB_URL
+const mongoDB = process.env.mongoDB_URI
 mongoose.connect(mongoDB, {
     useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -33,13 +37,12 @@ db.on("error", (error) => {
 });
 
 
-///middlewares
-app.use(express.json())
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }));
+
 
 app.get("/", (req, res)=>{
-    res.send("This is the porsche app for edu api development project")
+    res.json({
+        message: "This is the porsche app for edu api development project"
+    })
 });
 
   

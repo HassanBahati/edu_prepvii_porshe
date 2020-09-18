@@ -5,10 +5,10 @@ const jwt = require("jsonwebtoken");
 
 
 //import validation schema
-const signInValidation = require("../helpers/schemas/users")
+const signInValidation = require("../helpers/schemas/users");
 
 //controllers for users to signin 
-exports.userSignUp = (req  , res, next)=>{
+exports.userSignup = (req  , res, next)=>{
     User.find({email: req.body.email })
     .exec()
     .then(user => {
@@ -18,7 +18,6 @@ exports.userSignUp = (req  , res, next)=>{
             });
         }else{
             bcrypt.hash(req.body.password, 10, (err, hash) =>{
-                //const {error} = signInValidation(req.body);
                 if (err) {
                     return res.status(500).json({
                         error: err
@@ -26,7 +25,6 @@ exports.userSignUp = (req  , res, next)=>{
                 }else {
                     const user = new User({
                         _id: new mongoose.Types.ObjectId(),
-                        name: req.body.name,
                         email: req.body.email,
                         password: hash
                     });
@@ -35,8 +33,6 @@ exports.userSignUp = (req  , res, next)=>{
                     .then(result => {
                         res.status(201).json({
                             message: "User created",
-                            username: user.name,
-                            id: user._id
                         });
                     })
                     .catch(err => {
@@ -56,22 +52,21 @@ exports.userSignUp = (req  , res, next)=>{
             error: err
         });
     })
-    //const result = Joi.validate(req.body, signInValidation)
 };
 
 
+//controller for users to login 
 
-//controller for users to login
 exports.userLogin = (req, res, next) => {
-    User.find({email: req.body.email})
+    User.find({ email: req.body.email})
     .exec()
     .then(user => {
         if (user.length < 1) {
-           return res.status(401).json({
-               message: "Auth failed, wrong email"
-           })
+            return res.status(401).json({
+                message: "Auth failed"
+            });
         }
-        bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+        bcrypt.compare(req.body.password, user[0].password, (err, result) =>{
             if (err) {
                 return res.status(401).json({
                     message: "Auth failed"
@@ -79,20 +74,18 @@ exports.userLogin = (req, res, next) => {
             }
             if (result) {
                 const token = jwt.sign({
-                    email: user[0].email,
-                    id: user[0]._id
-                }, process.env.JWT_KEY,
-                {
-                    expiresIn : "1hr"
-                });
+                    email: [0].email,
+                    userId: user[0]._id
+                }, 
+                process.env.JWT_KEY, {
+                   expiresIn: "1h"  
+                }
+                )
                 return res.status(200).json({
-                    message: "Auth Successful, successfully logged in",
+                    message: "Auth successful",
                     token: token
                 })
             }
-            res.status(401).json({
-                message: "Auth failed"
-            })
         })
     })
     .catch(err => {
@@ -100,14 +93,5 @@ exports.userLogin = (req, res, next) => {
         res.status(500).json({
             error: err
         });
-    });
+    })
 };
-
-
-
-
-
-
-
- 
-
