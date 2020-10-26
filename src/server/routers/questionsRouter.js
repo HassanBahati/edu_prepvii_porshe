@@ -16,7 +16,7 @@ router.get("/:id", questionController.questionDetails);
 router.delete("/:id", questionController.questionDelete);
 
 //get all questions
-router.get("/all", questionController.allQuestions);
+router.get("/", questionController.allQuestions);
 
 
 

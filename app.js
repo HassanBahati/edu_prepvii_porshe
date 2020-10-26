@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const  cors = require("cors")
 require("dotenv").config()
 
 
@@ -11,6 +12,7 @@ const PORT= process.env.PORT || 6000
 app.use(express.json())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
 
 // routes constants
 
@@ -21,7 +23,7 @@ const users = require("./src/server/routers/userRoute");
 
 
 //connect to mongoose
-const mongoDB = process.env.mongoDB_URI
+const mongoDB = process.env.mongoDB_URL
 mongoose.connect(mongoDB, {
     useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -41,7 +43,7 @@ db.on("error", (error) => {
 
 app.get("/", (req, res)=>{
     res.json({
-        message: "This is the porsche app for edu api development project"
+        message: "This is the api porsche app project"
     })
 });
 
@@ -50,6 +52,15 @@ app.use("/api/answers", answers);
 app.use("/api/questions", questions);
 app.use("/api/auth", users);
 
+
+//for cross origin resource sharing 
+app.use(function(req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*") //update to match detail you make requests from
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+        res.header("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, OPTIONS");
+        res.header('Access-Control-Allow-Credentials', true);
+        next();
+    });
 
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`)

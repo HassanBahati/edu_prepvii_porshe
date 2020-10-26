@@ -35,21 +35,31 @@ exports.questionCreate = (req, res, next) => {
       }
   })
 }
-
-
 //all questions
-exports.allQuestions = (req, res) => {
-  Questions.find((err, questions) => {
-    if (err) return console.log(err);
-    res.json(questions);
-    console.log(questions.length)
-  })
+exports.allQuestions = async (req, res, next) => {
+  try{
+const results = await Questions.find({}, {__v:0})
+res.send(results)
+  }catch (error) {
+console.log(error.message);
+  }
 }
 
-  
+//all questions
+/*exports.allQuestions = async (req, res, next) => {
+    try {
+      const result = await Questions.find({}, { __v: 0 })
+      if (!result) return res.json({ error: 404, message: "Not Found" });
+      res.send(result);
+    } catch (error) {
+      console.log(error.message);
+      next(error);
+    }
+  };
+*/ 
 // get question by Id
 exports.questionDetails = (req, res, next) => {
-  Questions.findById(req.params._id, (err, question) => {
+  Questions.findById(req.params.id, (err, question) => {
     if (err) return next(err);
     res.json(question);
   });
