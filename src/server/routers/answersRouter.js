@@ -7,10 +7,10 @@ const answerController = require("../controllers/answersController")
 
 
 //post an answer
-router.post("/post", answerController.answerCreate)
+router.post("/create", answerController.answerCreate)
 
 //show all answers to a question
-router.get("/questions/:questionId/answers", answerController.answerCreate)
+router.get("/", answerController.answersAll)
 
 // update an answer by author only
  //router.put("/questions/<questionId>/answers/<answerId>", verify, answerController.answerUpdate)

@@ -54,4 +54,12 @@ exports.answerUpdate = (req, res) => {
   );
 };
 
-
+//all answers
+exports.answersAll = async (req, res, next) => {
+  try{
+const results = await Answers.find({}, {__v:0})
+res.send(results)
+  }catch (error) {
+console.log(error.message);
+  }
+}

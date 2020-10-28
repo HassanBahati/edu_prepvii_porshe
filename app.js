@@ -6,7 +6,7 @@ require("dotenv").config()
 
 
 const app = express();
-const PORT= process.env.PORT || 6000
+const PORT= process.env.PORT || 5000
 
 ///middlewares
 app.use(express.json())
@@ -23,7 +23,7 @@ const users = require("./src/server/routers/userRoute");
 
 
 //connect to mongoose
-const mongoDB = process.env.mongoDB_URL
+const mongoDB = process.env.mongoDB_URI
 mongoose.connect(mongoDB, {
     useNewUrlParser: true,
   useUnifiedTopology: true,
